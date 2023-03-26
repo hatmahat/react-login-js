@@ -21,8 +21,9 @@ export const Users = () => {
                 const response = await axiosPrivate.get("/users", {
                     signal: controller.signal,
                 });
-                // console.log("Users response", response.data);
-                isMounted && setUsers(response.data);
+                const userNames = response.data.map(user => user.username)
+                console.log("Users response", response.data);
+                isMounted && setUsers(userNames);
             } catch (e) {
                 console.error("**Error in Users:", e);
                 navigate("/login", {
@@ -48,7 +49,7 @@ export const Users = () => {
             {users?.length ? (
                 <ul>
                     {users.map((user, i) => (
-                        <li key={i}>{user?.username}</li>
+                        <li key={i}>{user}</li>
                     ))}
                 </ul>
             ) : (
