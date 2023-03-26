@@ -2,11 +2,13 @@ import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useAuth from "../hooks/useAuth";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const PresistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const { auth, persist } = useAuth();
+    const { auth } = useAuth();
+    const [persist] = useLocalStorage("persist", false);
 
     useEffect(() => {
         let isMounted = true;
@@ -23,7 +25,7 @@ const PresistLogin = () => {
 
         !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
 
-        return () => isMounted = false // if the component being unmounted
+        return () => (isMounted = false); // if the component being unmounted
     }, []);
 
     useEffect(() => {
